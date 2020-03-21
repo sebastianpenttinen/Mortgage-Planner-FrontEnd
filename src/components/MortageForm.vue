@@ -1,12 +1,12 @@
 <template>
-  <div id="employee-form">
+  <div id="mortage-form">
     <form @submit.prevent="handleSubmit">
       <label>Name</label>
       <input
         ref="first"
         type="text"
         :class="{ 'has-error': submitting && invalidName }"
-        v-model="employee.name"
+        v-model="mortage.name"
         @focus="clearStatus"
         @keypress="clearStatus"
       />
@@ -14,21 +14,21 @@
       <input
         type="number"
         :class="{ 'has-error': submitting && invalidAmount }"
-        v-model="employee.amount"
+        v-model="mortage.amount"
         @focus="clearStatus"
       />
       <label>Interest</label>
       <input
         type="number"
         :class="{ 'has-error': submitting && invalidInterest }"
-        v-model="employee.interest"
+        v-model="mortage.interest"
         @focus="clearStatus"
       />
       <label>Years</label>
       <input
         type="number"
         :class="{ 'has-error': submitting && invalidYears }"
-        v-model="employee.years"
+        v-model="mortage.years"
         @focus="clearStatus"
       />
       <p v-if="error && submitting" class="error-message">❗Please fill out all required fields</p>
@@ -40,13 +40,13 @@
 
 <script>
 export default {
-  name: "employee-form",
+  name: "mortage-form",
   data() {
     return {
       submitting: false,
       error: false,
       success: false,
-      employee: {
+      mortage: {
         name: "",
         amount: "",
         interest: "",
@@ -69,9 +69,9 @@ export default {
         return;
       }
 
-      this.$emit("add:employee", this.employee);
+      this.$emit("add:mortage", this.mortage);
       this.$refs.first.focus();
-      this.employee = {
+      this.mortage = {
         name: "",
         amount: "",
         interest: "",
@@ -89,17 +89,17 @@ export default {
   },
   computed: {
     invalidName() {
-      return this.employee.name === "";
+      return this.mortage.name === "";
     },
 
     invalidAmount() {
-      return this.employee.amount === "";
+      return this.mortage.amount === "";
     },
     invalidInterest() {
-      return this.employee.interest === "";
+      return this.mortage.interest === "";
     },
     invalidYears() {
-      return this.employee.years === "";
+      return this.mortage.years === "";
     }
   }
 };

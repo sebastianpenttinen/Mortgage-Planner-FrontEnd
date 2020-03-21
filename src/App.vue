@@ -1,28 +1,28 @@
 <template>
   <div id="app" class="small-container">
     <h1>Mortage Planner</h1>
-    <employee-form @add:employee="addEmployee" />
-    <employee-table
-      :employees="employees"
-      @delete:employee="deleteEmployee"
-      @edit:employee="editEmployee"
+    <mortage-form @add:mortage="addMortage" />
+    <mortage-table
+      :mortages="mortages"
+      @delete:mortage="deleteMortage"
+      @edit:mortage="editMortage"
     />
   </div>
 </template>
 
 <script>
-import EmployeeTable from "./components/EmployeeTable.vue";
-import EmployeeForm from "./components/EmployeeForm.vue";
+import MortageTable from "./components/MortageTable.vue";
+import MortageForm from "./components/MortageForm.vue";
 
 export default {
   name: "App",
   components: {
-    EmployeeTable,
-    EmployeeForm
+    MortageTable,
+    MortageForm
   },
   data() {
     return {
-      employees: [
+      mortages: [
         {
           id: 1,
           name: "Juha",
@@ -55,22 +55,22 @@ export default {
     };
   },
   methods: {
-    addEmployee(employee) {
+    addMortage(mortage) {
       const lastId =
-        this.employees.length > 0
-          ? this.employees[this.employees.length - 1].id
+        this.mortages.length > 0
+          ? this.mortages[this.mortages.length - 1].id
           : 0;
       const id = lastId + 1;
-      const newEmployee = { ...employee, id };
+      const newMortage = { ...mortage, id };
 
-      this.employees = [...this.employees, newEmployee];
+      this.mortages = [...this.mortages, newMortage];
     },
-    deleteEmployee(id) {
-      this.employees = this.employees.filter(employee => employee.id !== id);
+    deleteMortage(id) {
+      this.mortages = this.mortages.filter(mortage => mortage.id !== id);
     },
-    editEmployee(id, updatedEmployee) {
-      this.employees = this.employees.map(employee =>
-        employee.id === id ? updatedEmployee : employee
+    editMortage(id, updatedMortage) {
+      this.mortages = this.mortages.map(mortage =>
+        mortage.id === id ? updatedMortage : mortage
       );
     }
   }
