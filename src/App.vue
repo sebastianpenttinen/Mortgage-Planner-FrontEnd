@@ -22,56 +22,64 @@ export default {
   },
   data() {
     return {
-      mortages: [
-        {
-          id: 1,
-          name: "Juha",
-          amount: 1000,
-          interest: 5,
-          years: 2
-        },
-        {
-          id: 2,
-          name: "Karvinen",
-          amount: 4356,
-          interest: 1.27,
-          years: 6
-        },
-        {
-          id: 3,
-          name: "Claes",
-          amount: 1300.55,
-          interest: 8.67,
-          years: 2
-        },
-        {
-          id: 4,
-          name: "Andersson",
-          amount: 2000,
-          interest: 6,
-          years: 4
-        }
-      ]
+      mortages: []
     };
   },
-  methods: {
-    addMortage(mortage) {
-      const lastId =
-        this.mortages.length > 0
-          ? this.mortages[this.mortages.length - 1].id
-          : 0;
-      const id = lastId + 1;
-      const newMortage = { ...mortage, id };
 
-      this.mortages = [...this.mortages, newMortage];
+  mounted() {
+    this.getMortages();
+  },
+
+  methods: {
+    async getMortages() {
+      try {
+        const response = await fetch("http://localhost:8080/mortages/");
+        const data = await response.json();
+        this.mortages = data;
+      } catch (error) {
+        console.error(error);
+      }
     },
-    deleteMortage(id) {
-      this.mortages = this.mortages.filter(mortage => mortage.id !== id);
+
+    async addMortage(mortage) {
+      try {
+        const response = await fetch("http://localhost:8080/mortages/", {
+          method: "POST",
+          body: JSON.stringify(mortage),
+          headers: { "Content-type": "application/json; charset=UTF-8" }
+        });
+        const data = await response.json();
+        this.mortages = [...this.mortages, data];
+      } catch (error) {
+        console.error(error);
+      }
     },
-    editMortage(id, updatedMortage) {
-      this.mortages = this.mortages.map(mortage =>
-        mortage.id === id ? updatedMortage : mortage
-      );
+
+    async editMortage(id, updatedMortage) {
+      try {
+        const response = await fetch(`http://localhost:8080/mortages/${id}`, {
+          method: "PUT",
+          body: JSON.stringify(updatedMortage),
+          headers: { "Content-type": "application/json; charset=UTF-8" }
+        });
+        const data = await response.json();
+        this.mortages = this.mortages.map(mortage =>
+          mortage.id === id ? data : mortage
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async deleteMortage(id) {
+      try {
+        await fetch(`http://localhost:8080/mortages/${id}`, {
+          method: "DELETE"
+        });
+        this.mortages = this.mortages.filter(mortage => mortage.id !== id);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };
