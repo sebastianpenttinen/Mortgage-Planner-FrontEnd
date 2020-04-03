@@ -34,10 +34,7 @@
           </td>
           <td v-else>{{mortage.interest}}</td>
 
-          <td v-if="editing === mortage.id">
-            <input type="text" v-model="mortage.montly" />
-          </td>
-          <td v-else>{{mortage.montly}}</td>
+          <td>{{mortage.monthlyPayment.toFixed(2)}}</td>
 
           <td v-if="editing === mortage.id">
             <button @click="editMortage(mortage)">Save</button>
@@ -91,5 +88,8 @@ export default {
 <style scoped>
 button {
   margin: 0 0.5rem 0 0;
+}
+td {
+  white-space: nowrap;
 }
 </style>
