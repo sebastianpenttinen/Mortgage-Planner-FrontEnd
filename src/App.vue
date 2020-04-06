@@ -1,87 +1,89 @@
 <template>
   <div id="app" class="small-container">
-    <h1>Mortage Planner</h1>
-    <mortage-form @add:mortage="addMortage" />
-    <mortage-table
-      :mortages="mortages"
-      @delete:mortage="deleteMortage"
-      @edit:mortage="editMortage"
+    <h1>Mortgage Planner</h1>
+    <mortgage-form @add:mortgage="addMortgage" />
+    <mortgage-table
+      :mortgages="mortgages"
+      @delete:mortgage="deleteMortgage"
+      @edit:mortgage="editMortgage"
     />
   </div>
 </template>
 
 <script>
-import MortageTable from "./components/MortageTable.vue";
-import MortageForm from "./components/MortageForm.vue";
+import MortgageTable from "./components/MortgageTable.vue";
+import MortgageForm from "./components/MortgageForm.vue";
 
 export default {
   name: "App",
   components: {
-    MortageTable,
-    MortageForm
+    MortgageTable,
+    MortgageForm,
   },
   data() {
     return {
-      mortages: []
+      mortgages: [],
     };
   },
 
   mounted() {
-    this.getMortages();
+    this.getMortgages();
   },
 
   methods: {
-    async getMortages() {
+    async getMortgages() {
       try {
-        const response = await fetch("http://localhost:8080/mortages/");
+        const response = await fetch("http://localhost:8080/mortgages/");
         const data = await response.json();
-        this.mortages = data;
+        this.mortgages = data;
       } catch (error) {
         console.error(error);
       }
     },
 
-    async addMortage(mortage) {
+    async addMortgage(mortgage) {
       try {
-        const response = await fetch("http://localhost:8080/mortages/", {
+        const response = await fetch("http://localhost:8080/mortgages/", {
           method: "POST",
-          body: JSON.stringify(mortage),
-          headers: { "Content-type": "application/json; charset=UTF-8" }
+          body: JSON.stringify(mortgage),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
         });
         const data = await response.json();
-        this.mortages = [...this.mortages, data];
+        this.mortgages = [...this.mortgages, data];
       } catch (error) {
         console.error(error);
       }
     },
 
-    async editMortage(id, updatedMortage) {
+    async editMortgage(id, updatedMortgage) {
       try {
-        const response = await fetch(`http://localhost:8080/mortages/${id}`, {
+        const response = await fetch(`http://localhost:8080/mortgages/${id}`, {
           method: "PUT",
-          body: JSON.stringify(updatedMortage),
-          headers: { "Content-type": "application/json; charset=UTF-8" }
+          body: JSON.stringify(updatedMortgage),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
         });
         const data = await response.json();
-        this.mortages = this.mortages.map(mortage =>
-          mortage.id === id ? data : mortage
+        this.mortgages = this.mortgages.map((mortgage) =>
+          mortgage.id === id ? data : mortgage
         );
       } catch (error) {
         console.error(error);
       }
     },
 
-    async deleteMortage(id) {
+    async deleteMortgage(id) {
       try {
-        await fetch(`http://localhost:8080/mortages/${id}`, {
-          method: "DELETE"
+        await fetch(`http://localhost:8080/mortgages/${id}`, {
+          method: "DELETE",
         });
-        this.mortages = this.mortages.filter(mortage => mortage.id !== id);
+        this.mortgages = this.mortgages.filter(
+          (mortgage) => mortgage.id !== id
+        );
       } catch (error) {
         console.error(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
